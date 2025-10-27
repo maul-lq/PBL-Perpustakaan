@@ -18,6 +18,7 @@ Tailwind CSS (styles)
 
 - Source: `assets/css/input.css`
 - Generated CSS: `assets/css/main.css` (committed but rebuild when editing source)
+- The global header `view/header/head.php` automatically includes `assets/css/main.css` for all pages; you don't need to link it per-view.
 
 Install dependencies and build CSS (run from project root)
 
@@ -37,4 +38,4 @@ Project layout and conventions
 Important notes for contributors
 
 - The project uses plain PHP files (no framework). Follow the existing include pattern when adding new views.
-
+- `config/koneksi.php` is intentionally gitignored to prevent committing credentials. Copy `config/koneksi.example.php` to `config/koneksi.php` and set your local secrets.
