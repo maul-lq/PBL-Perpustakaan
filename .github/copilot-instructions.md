@@ -4,7 +4,7 @@ What this repo is
 - Plain PHP + Tailwind CSS app served by Apache/XAMPP (no SPA, no framework router). Views live in `view/`.
 
 Structure and flow (keep this separation)
-- Views: templates under `view/`. Common head lives at `view/header/head.php` and is included via `require __DIR__.'/header/head.php';` (use `__DIR__` for stable paths).
+- Views: templates under `view/`. Common head lives at `view/components/head.php` and is included via `require __DIR__.'/components/head.php';` (use `__DIR__` for stable paths).
 - Controllers/Models: `controller/` and `model/` are scaffolds (empty now). Put business logic in `controller/` and DB access in `model/`. Keep presentation in `view/`.
 - DB config: `config/koneksi.php` should create a PDO `$pdo`. A safe template exists at `config/koneksi.example.php` — copy it to `config/koneksi.php` locally and fill credentials.
 
