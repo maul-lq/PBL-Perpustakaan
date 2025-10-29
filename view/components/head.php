@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,5 +23,4 @@
     <meta http-equiv="X-UA-Compatible" content="IE=7">
     <link rel="shortcut icon" href="<?= htmlspecialchars($asset('favicon.ico'), ENT_QUOTES) ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= htmlspecialchars($asset('assets/css/main.css'), ENT_QUOTES) ?>">
-    <title>Login - Perpustakaan</title>
-</head>
+
