@@ -3,6 +3,7 @@
 
 <head>
     <?php
+
     // Compute a base URL path to the project root so asset links work from any view.
     $docRootFs = isset($_SERVER['DOCUMENT_ROOT']) ? realpath($_SERVER['DOCUMENT_ROOT']) : null;
     $projectRootFs = realpath(dirname(__DIR__, 2)); // project root two levels up from view/header
@@ -23,4 +24,3 @@
     <meta http-equiv="X-UA-Compatible" content="IE=7">
     <link rel="shortcut icon" href="<?= htmlspecialchars($asset('favicon.ico'), ENT_QUOTES) ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= htmlspecialchars($asset('assets/css/main.css'), ENT_QUOTES) ?>">
-

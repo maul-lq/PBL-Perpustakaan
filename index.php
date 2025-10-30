@@ -1,64 +1,66 @@
-<?php require __DIR__ . '/view/components/head.php'; ?>
+<?php 
 
-<title>Login Page</title>
+// Daftar mapping autoloader untuk class ke file
+$mapmodeldancontroller = [
+    'Koneksi' => __DIR__ . '/config/Koneksi.php',
+    'LoginController' => __DIR__ . '/controller/LoginController.php',
+    'LoginModel' => __DIR__ . '/model/LoginModel.php',
+    'RegisterController' => __DIR__.'/controller/RegisterController.php',
+    'RegisterModel' => __DIR__.'/model/RegisterModel.php',
+    'GuestController' => __DIR__.'/controller/GuestController.php',
+    'GuestModel' => __DIR__.'/model/GuestModel.php',
+];
 
-  <!-- NOTE: Tailwind must already be included in the project (no CDN here) -->
-  <style>
-    /* Minor utility for background image placeholder.
-       Replace --bg-login-url with actual image path in your project or remove if using Tailwind utilities */
-    :root{
-      --bg-login-url: url('/path/to/your/background.jpg');
+// Autoload class sesuai mapping di atas
+spl_autoload_register(static function (string $class) use ($mapmodeldancontroller): void {
+    // Jika class ada di mapping, require file-nya
+    if (isset($mapmodeldancontroller[$class])) {
+        require_once $mapmodeldancontroller[$class];
     }
-    .page-bg {
-      background-image: var(--bg-login-url);
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col bg-white text-black font-inter page-bg">
+});
 
-  <!-- Header -->
-  <header class="flex flex-col items-center pt-16 px-6">
-    <!-- Logo circle -->
-    <div
-      role="img"
-      aria-label="Website logo"
-      class="w-56 h-56 bg-zinc-500 rounded-2xl flex items-center justify-center text-white text-xs"
-      id="site-logo"
-    >
-      Logo
-    </div>
+// Ambil parameter halaman dari URL, default 'home'
+$halaman = $_GET['page'] ?? 'home';
+// Ambil parameter aksi dari URL, default 'index'
+$aksi = $_GET['action'] ?? 'index';
 
-    <!-- Title & description (matching the Figma text elements) -->
-    <h1 class="mt-6 text-xl font-semibold" id="page-title">Judul</h1>
-    <p class="mt-2 text-sm text-gray-600" id="page-description">Deskripsi singkat halaman login</p>
-  </header>
+// Inisialisasi variabel controller
+$controller = null;
 
-  <!-- Main content -->
-  <main class="flex flex-col items-center mt-12 px-6 w-full">
-    <form class="w-full max-w-md flex flex-col gap-6" action="#" method="post" novalidate>
-      <!-- Buttons -->
-      <button type="submit" class="w-full bg-stone-300 mt-20 rounded-full py-4 hover:bg-zinc-500 transition">
-        LOG IN
-      </button>
+// Pilih controller sesuai halaman yang diminta
+switch ($halaman) {
+    case 'login':
+        $controller = new LoginController();
+        break;
+    case 'register':
+        $controller = new RegisterController();
+        break;
+    case 'guest':
+        $controller = new GuestController();
+        break;
+    default:
+        break;
+}
 
-      <button type="button" class="w-full bg-stone-300 rounded-full py-4 hover:bg-stone-400 transition" id="btn-register">
-        REGISTER
-      </button>
+// Jika controller tidak ditemukan (halaman home)
+if ($controller === null) {
+    // Inisialisasi variabel atau model disini jika perlu
+    // Contoh: $modelPeminjaman = new PeminjamanModel();
+    
+    // Logic untuk halaman home disini
 
-      <button type="button" class="w-full bg-stone-300 rounded-full py-4 hover:bg-stone-400 transition" id="btn-guest">
-        GUEST MODE
-      </button>
-    </form>
-  </main>
+    // Tampilkan halaman home
+    require __DIR__ . '/view/startpage.php';
+    return;
+}
 
-  <!-- Footer -->
-  <footer class="mt-auto text-center py-6 text-xs text-gray-500">
-    <p>© 2025 Copyright</p>
-  </footer>
+// Jika method aksi tidak ada di controller, tampilkan 404
+if (!method_exists($controller, $aksi)) {
+    http_response_code(404);
+    echo '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>404</title><link rel="stylesheet" href="assets/css/main.css"></head><body><main class="content"><h1>404</h1><p>Halaman tidak ditemukan.</p><p><a class="button" href="index.php?page=home">Kembali ke beranda</a></p></main></body></html>';
+    return;
+}
 
-</body>
-</html>
-
+// Jalankan method aksi pada controller yang dipilih
+$controller->{$aksi}();
+?>
